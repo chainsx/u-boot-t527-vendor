@@ -83,19 +83,6 @@ else
   Q = @
 endif
 
-buildconfig = ../../../.buildconfig
-ifeq ($(buildconfig), $(wildcard $(buildconfig)))
-	LICHEE_BUSSINESS=$(shell cat $(buildconfig) | grep -w "LICHEE_BUSSINESS" | awk -F= '{printf $$2}')
-	LICHEE_CHIP_CONFIG_DIR=$(shell cat $(buildconfig) | grep -w "LICHEE_CHIP_CONFIG_DIR" | awk -F= '{printf $$2}')
-	LICHEE_ARCH=$(shell cat $(buildconfig) | grep -w "LICHEE_ARCH" | awk -F= '{printf $$2}')
-	LICHEE_IC=$(shell cat $(buildconfig) | grep -w "LICHEE_IC" | awk -F= '{printf $$2}')
-	LICHEE_CHIP=$(shell cat $(buildconfig) | grep -w "LICHEE_CHIP" | awk -F= '{printf $$2}')
-	LICHEE_BOARD=$(shell cat $(buildconfig) | grep -w "LICHEE_BOARD" | awk -F= '{printf $$2}')
-	LICHEE_PLAT_OUT=$(shell cat $(buildconfig) | grep -w "LICHEE_PLAT_OUT" | awk -F= '{printf $$2}')
-	LICHEE_BOARD_CONFIG_DIR=$(shell cat $(buildconfig) | grep -w "LICHEE_BOARD_CONFIG_DIR" | awk -F= '{printf $$2}')
-	export LICHEE_BUSSINESS LICHEE_CHIP_CONFIG_DIR LICHEE_IC LICHEE_ARCH LICHEE_CHIP LICHEE_BOARD LICHEE_PLAT_OUT LICHEE_BOARD_CONFIG_DIR
-endif
-
 # If the user is running make -s (silent mode), suppress echoing of
 # commands
 
@@ -268,42 +255,23 @@ endif
 endif
 
 #########################################################################
-ifeq (x$(CONFIG_ARCH_RV32I), xy)
-RISCV_PATH=nds32le-linux-glibc-v5d
-else
-RISCV_PATH=riscv64-linux-x86_64-20200528
-endif
-
-riscv_toolchain_check=$(shell if [ ! -d ../tools/toolchain/$(RISCV_PATH) ]; then echo yes; else echo no; fi;)
-ifeq (x$(riscv_toolchain_check), xyes)
-$(info Prepare riscv toolchain ...);
-$(shell mkdir -p ../tools/toolchain/$(RISCV_PATH) || exit 1)
-$(shell tar --strip-components=1 -xf ../tools/toolchain/$(RISCV_PATH).tar.xz -C ../tools/toolchain/$(RISCV_PATH) || exit 1)
-endif
-arm_toolchain_check=$(shell if [ ! -d ../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi ]; then echo yes; else echo no; fi;)
-ifeq (x$(arm_toolchain_check), xyes)
-$(info Prepare arm toolchain ...);
-$(shell mkdir -p ../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi || exit 1)
-$(shell tar --strip-components=1 -xf ../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi.tar.xz -C ../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi || exit 1)
-endif
-
 
 ifeq (x$(CONFIG_RISCV), xy)
 ifeq (x$(CONFIG_ARCH_RV32I), xy)
-CROSS_COMPILE := $(srctree)/../tools/toolchain/$(RISCV_PATH)/bin/riscv32-unknown-linux-
+CROSS_COMPILE := riscv32-linux-gnu-
 DTS_PATH := $(PWD)/arch/riscv/dts
 else
-CROSS_COMPILE := $(srctree)/../tools/toolchain/$(RISCV_PATH)/bin/riscv64-unknown-linux-gnu-
+CROSS_COMPILE := riscv64-linux-gnu-
 DTS_PATH := $(PWD)/arch/riscv/dts
 endif
 endif
 
 ifeq (x$(CONFIG_ARM), xy)
-CROSS_COMPILE := $(srctree)/../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-
+CROSS_COMPILE := arm-linux-gnueabi-
 DTS_PATH := $(PWD)/arch/arm/dts
 endif
 
-CROSS_COMPILE ?= $(srctree)/../tools/toolchain/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-
+CROSS_COMPILE ?= arm-linux-gnueabi-
 DTS_PATH ?= $(PWD)/arch/arm/dts
 
 #######################################################################
