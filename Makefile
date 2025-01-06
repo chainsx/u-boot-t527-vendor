@@ -408,7 +408,7 @@ KBUILD_CPPFLAGS := -D__KERNEL__ -D__UBOOT__
 KBUILD_CFLAGS   := -Wall -Wstrict-prototypes \
 		   -Wno-format-security \
 		   -fno-builtin -ffreestanding $(CSTD_FLAG) \
-		   -Werror
+		   -Wno-array-parameter -Wno-attributes
 ifeq (x$(CONFIG_ARCH_RV32I), xy)
 KBUILD_CFLAGS	+= -Wno-error=address-of-packed-member
 KBUILD_CFLAGS	+= -Wno-address-of-packed-member
