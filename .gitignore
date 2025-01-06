@@ -112,4 +112,5 @@ tools/sunxi_proftool
 /scp.fex
 /sunxi.fex
 /sys_config.fex
+/sys_config.bin
 /sys_config/
