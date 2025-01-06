@@ -871,7 +871,7 @@ endif
 
 # Always append ALL so that arch config.mk's can add custom ones
 ALL-y += u-boot.srec u-boot.bin u-boot.sym System.map binary_size_check
-ALL-$(CONFIG_ARCH_SUNXI) += u-boot-$(CONFIG_SYS_CONFIG_NAME).bin
+#ALL-$(CONFIG_ARCH_SUNXI) += u-boot-$(CONFIG_SYS_CONFIG_NAME).bin
 
 ALL-$(CONFIG_ONENAND_U_BOOT) += u-boot-onenand.bin
 ifeq ($(CONFIG_SPL_FSL_PBL),y)
@@ -1016,15 +1016,15 @@ dtbs: dts/dt.dtb
 	@:
 dts/dt.dtb: u-boot
 
-ifeq (x$(DEVICE_BOARD_DTS_EXIST), xyes)
-	@-cp -v $(LICHEE_BOARD_CONFIG_DIR)/uboot-board.dts $(DTS_PATH)/.board-uboot.dts
-else
-ifeq (x$(BOARD_DTS_EXIST),xyes)
-	@-cp -v $(DTS_PATH)/$(BOARD_DTS_NAME).dts $(DTS_PATH)/.board-uboot.dts
-else
-	@-cp -v $(DTS_PATH)/$(CONFIG_SYS_CONFIG_NAME)-common-board.dts $(DTS_PATH)/.board-uboot.dts
-endif
-endif
+#ifeq (x$(DEVICE_BOARD_DTS_EXIST), xyes)
+#	@-cp -v $(LICHEE_BOARD_CONFIG_DIR)/uboot-board.dts $(DTS_PATH)/.board-uboot.dts
+#else
+#ifeq (x$(BOARD_DTS_EXIST),xyes)
+#	@-cp -v $(DTS_PATH)/$(BOARD_DTS_NAME).dts $(DTS_PATH)/.board-uboot.dts
+#else
+#	@-cp -v $(DTS_PATH)/$(CONFIG_SYS_CONFIG_NAME)-common-board.dts $(DTS_PATH)/.board-uboot.dts
+#endif
+#endif
 	$(Q)$(MAKE) $(build)=dts dtbs
 	$(DTC) $(DTS_WARNNING_SKIP) -I dtb -O dts  $(DTS_PATH)/$(CONFIG_DEFAULT_DEVICE_TREE).dtb > u-boot-dtb.dts
 
