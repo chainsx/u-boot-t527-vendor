@@ -1088,7 +1088,6 @@ boot-package-sun55iw3: u-boot.bin
 	$(SUNXI_SCRIPT) sys_config.fex
 	$(SUNXI_UPDATE_UBOOT) -no_merge u-boot.fex sys_config.bin
 	$(SUNXI_DRAGONSECBOOT) -pack boot_package.cfg
-	
 
 %.imx: %.bin
 	$(Q)$(MAKE) $(build)=arch/arm/mach-imx $@
